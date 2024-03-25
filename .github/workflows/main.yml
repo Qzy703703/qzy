@@ -1,0 +1,56 @@
+# This is a basic workflow to help you get started with Actions
+# push完代码往服务器推送 自动部署
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  # pull_request:
+    # branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v3.0.0
+        with:
+          version: "8.10.5"
+        # 安装依赖
+      - name: Install Deps
+        run: pnom isntall
+        # 项目打包
+      - name: Build Package
+        run: pnpm build
+        #ssh 部署
+      - name: ssh deploy
+        uses: easingthemes/ssh-deploy@v5.0.3
+        with:
+        # Private key part of an SSH key pair 在仓库的secret中配置
+            SSH_PRIVATE_KEY: ${{secreat.PRIVATE_KE}}
+            # Remote host
+            REMOTE_HOST:  ${{secret.HOST}}
+            # Remote user
+            REMOTE_USER: ${{secret.USER}}
+            # Remote port
+            REMOTE_PORT: ${{secret.PORT}}
+            # Source directory, path relative to `$GITHUB_WORKSPACE` root, eg: `dist/`
+            SOURCE: ./dist
+            # Target directory 服务器上的路径
+            TARGET: /home/test 
+    
+          
+          
+      
