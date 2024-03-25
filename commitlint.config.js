@@ -1,5 +1,5 @@
-// commit 校验
 
-module.exports = {
+// commit 校验
+export default {
   extends: ['@commitlint/config-conventional'],
 };

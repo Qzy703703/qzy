@@ -39,13 +39,11 @@ jobs:
         uses: easingthemes/ssh-deploy@v5.0.3
         with:
         # Private key part of an SSH key pair 在仓库的secret中配置
-            SSH_PRIVATE_KEY: ${{secreat.PRIVATE_KE}}
+            SSH_PRIVATE_KEY: ${{secret.PRIVATE_KE}}
             # Remote host
             REMOTE_HOST:  ${{secret.HOST}}
             # Remote user
-            REMOTE_USER: ${{secret.USER}}
-            # Remote port
-            REMOTE_PORT: ${{secret.PORT}}
+            REMOTE_USER: ${{secret.USERNAME}}
             # Source directory, path relative to `$GITHUB_WORKSPACE` root, eg: `dist/`
             SOURCE: ./dist
             # Target directory 服务器上的路径
