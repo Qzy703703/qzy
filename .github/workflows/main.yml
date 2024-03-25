@@ -30,7 +30,7 @@ jobs:
           version: "8.10.5"
         # 安装依赖
       - name: Install Deps
-        run: pnom isntall
+        run: pnpm isntall
         # 项目打包
       - name: Build Package
         run: pnpm build
