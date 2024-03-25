@@ -39,7 +39,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v5.0.3
         with:
         # Private key part of an SSH key pair 在仓库的secret中配置
-            SSH_PRIVATE_KEY: ${{secret.PRIVATE_KE}}
+            SSH_PRIVATE_KEY: ${{secret.PRIVATE_KEY}}
             # Remote host
             REMOTE_HOST:  ${{secret.HOST}}
             # Remote user
