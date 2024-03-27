@@ -47,7 +47,7 @@ jobs:
             # Source directory, path relative to `$GITHUB_WORKSPACE` root, eg: `dist/`
             SOURCE: ./dist
             # Target directory 服务器上的路径
-            TARGET: /home/test/qzy 
+            TARGET: /home/test 
     
           
           
