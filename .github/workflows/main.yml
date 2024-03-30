@@ -1,51 +1,35 @@
-# This is a basic workflow to help you get started with Actions
-# push完代码往服务器推送 自动部署
+name: deploy
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
-  # pull_request:
-    # branches: [ "main" ]
+    branches: [master] # master 分支有 push 时触发
+    paths-ignore:   # 下列文件的变更不触发部署，可以自行添加
+      - README.md
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  deploy:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v3.0.0
+
+      # 下载源码
+      # 这一步就是检出你的仓库并下载里面的代码到runner中,actions/checkout@v2是官方自己造的轮子，直接拿来用就行
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # 打包构建
+      - name: Build
+        uses: actions/setup-node@master
         with:
-          version: "8.15.4"
-        # 安装依赖
-      - name: Install Deps
-        run: pnpm install
-        # 项目打包
-      - name: Build Package
-        run: pnpm build
-        #github-pages 部署
-      - name: github-pages deploy
-        uses: peaceiris/actions-gh-pages@v3
+          node-version: '16.x'
+      - run: npm install # 安装依赖
+      - run: npm run build # 打包
+
+      # 部署到 GitHub pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3 # 使用部署到 GitHub pages 的 action
         with:
-          github_token: ${{secrets.TOKENS}}
-          branch: github_page
-          publish_dir: ./dist
-          # Set Git user.name
-          user_name: ${{secrets.USERNAME}}
-          # Set Git user.email
-          user_email: ${{secrets.EMAIL}}
-          # Set a custom commit message with a triggered commit hash
-          commit_message: 自动化部署
-    
-  
+          publish_dir: ./dist # 部署打包后的 dist 目录
+          github_token: ${{ secrets.TOKENS }} # secret 名
+          user_name: ${{ secrets.USERNAME }}
+          user_email: ${{ secrets.EMAIL }}
+          commit_message: 自动部署 # 部署时的 git 提交信息，自由填写
