@@ -38,14 +38,13 @@ jobs:
       - name: github-pages deploy
         uses: peaceiris/actions-gh-pages@v3.9.3
         with:
-          # Set a generated GITHUB_TOKEN for pushing to the remote branch.
           github_token: ${{secrets.TOKENS}}
           publish_branch: main
           publish_dir: ./dist
           # Set Git user.name
           user_name: ${{secrets.USERNAME}}
           # Set Git user.email
-          user_email:  ${{secrets.EMAIL}}
+          user_email: ${{secrets.EMAIL}}
           # Set a custom commit message with a triggered commit hash
           commit_message: 自动化部署
     
