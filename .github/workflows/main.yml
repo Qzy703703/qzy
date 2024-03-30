@@ -35,20 +35,18 @@ jobs:
       - name: Build Package
         run: pnpm build
         #ssh 部署
-      - name: ssh deploy
-        uses: easingthemes/ssh-deploy@v5.0.3
+      - name: github pages deploy
+        uses: peaceiris/actions-gh-pages@v3.9.3
         with:
-        # Private key part of an SSH key pair 在仓库的secret中配置
-            SSH_PRIVATE_KEY: ${{secrets.PRIVATE_KEY}}
-            # Remote host
-            REMOTE_HOST:  ${{secrets.HOST}}
-            # Remote user
-            REMOTE_USER: ${{secrets.USERNAME}}
-            # Source directory, path relative to `$GITHUB_WORKSPACE` root, eg: `dist/`
-            SOURCE: ./dist
-            # Target directory 服务器上的路径
-            TARGET: /home/test 
+        # Set a generated GITHUB_TOKEN for pushing to the remote branch.
+        github_token: ${{secrets.TOKENS}}
+        publish_branch: main
+        publish_dir: ./dist
+        # Set Git user.name
+        user_name: ${{secrets.USERNAME}}
+        # Set Git user.email
+        user_email:  ${{secrets.EMAIL}}
+        # Set a custom commit message with a triggered commit hash
+        commit_message: 自动化部署
     
-          
-          
-      
+  
